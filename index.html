@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Signs and Symptoms: Interactive Lesson</title>
+<style>
+:root{--bg:#f3f7f6;--card:#ffffff;--text:#16302d;--muted:#5a726e;--line:#d3e0dd;--teal:#0f766e;--tealbg:#d9f0ec;--sign:#1d4ed8;--signbg:#dbe7fd;--sym:#b4530a;--symbg:#fde7d0;--ok:#15803d;--okbg:#dcf4e3;--bad:#b91c1c;--badbg:#fbdcdc;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1c1a;--card:#162826;--text:#e4f1ee;--muted:#9bb5b0;--line:#2a4440;--teal:#4fd1c0;--tealbg:#1b3a36;--sign:#8fb4ff;--signbg:#1c2c52;--sym:#f4a860;--symbg:#41290f;--ok:#6ee7a0;--okbg:#17372480;--bad:#ff9b9b;--badbg:#42181880;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1c1a;--card:#162826;--text:#e4f1ee;--muted:#9bb5b0;--line:#2a4440;--teal:#4fd1c0;--tealbg:#1b3a36;--sign:#8fb4ff;--signbg:#1c2c52;--sym:#f4a860;--symbg:#41290f;--ok:#6ee7a0;--okbg:#17372480;--bad:#ff9b9b;--badbg:#42181880;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 Georgia,"Iowan Old Style","Times New Roman",serif}
+h1,h2,h3,button,.tag,nav{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 56px}
+h1{font-size:1.7rem;margin:0 0 4px;line-height:1.2}
+.sub{color:var(--muted);margin:0 0 16px}
+nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:7px 13px;font-size:.88rem;cursor:pointer}
+nav button[aria-current="true"]{background:var(--teal);color:var(--bg);border-color:var(--teal);font-weight:700}
+section{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+section.on{display:block}
+h2{margin:0 0 6px;font-size:1.3rem}
+.lead{color:var(--muted);margin:0 0 14px}
+button.act{background:var(--teal);color:var(--bg);border:0;border-radius:10px;padding:9px 16px;font-size:.95rem;font-weight:700;cursor:pointer}
+button.alt{background:transparent;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:.9rem;cursor:pointer}
+button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+.box{border-radius:12px;padding:14px;border:1px solid var(--line)}
+.box.sg{background:var(--signbg)}.box.sy{background:var(--symbg)}
+.box h3{margin:0 0 4px;font-size:1rem}
+.box.sg h3{color:var(--sign)}.box.sy h3{color:var(--sym)}
+.hidden{display:none}
+.reveal{background:var(--tealbg);border-radius:12px;padding:14px;margin-top:12px}
+.fb{margin-top:6px;font-size:.92rem;padding:8px 10px;border-radius:8px}
+.fb.ok{background:var(--okbg);color:var(--ok)}.fb.no{background:var(--badbg);color:var(--bad)}
+.q{border-top:1px solid var(--line);padding:12px 0}
+.q:first-of-type{border-top:0}
+.q .row{display:flex;gap:8px;margin-top:8px}
+.score{font-family:"Trebuchet MS",system-ui,sans-serif;font-weight:700;color:var(--teal);margin-top:12px}
+.pool{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;min-height:44px}
+.chip{border:1.5px solid var(--line);background:var(--bg);color:var(--text);border-radius:10px;padding:8px 12px;font-size:.92rem;cursor:pointer;font-family:inherit}
+.chip.sel{border-color:var(--teal);background:var(--tealbg);font-weight:700}
+.chip.done{cursor:default;opacity:.95}
+.chip.good{border-color:var(--ok);background:var(--okbg)}
+.drop{min-height:90px;cursor:pointer}
+.drop .items{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.mcols{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+.mcols .chip{text-align:left;width:100%}
+table{width:100%;border-collapse:collapse;font-size:.93rem;margin:8px 0}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.role{border-left:4px solid var(--teal);padding:6px 0 6px 12px;margin:10px 0}
+.role b{font-family:"Trebuchet MS",system-ui,sans-serif}
+textarea{width:100%;min-height:80px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--text);font:inherit}
+label.ck{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-size:.93rem}
+select{padding:7px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit}
+.tag{display:inline-block;font-size:.78rem;border-radius:6px;padding:2px 8px;font-weight:700}
+.find{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;text-align:left}
+.nextrow{display:flex;justify-content:space-between;margin-top:18px}
+</style>
+</head>
+<body>
+<main>
+<h1>Signs and symptoms</h1>
+<p class="sub">An interactive lesson: five activities, then a group role play.</p>
+<nav id="nav" aria-label="Lesson steps"></nav>
+
+<section id="s0">
+<h2>1. Starter: spot the difference</h2>
+<p class="lead">Work alone for one minute, then compare with a partner.</p>
+<div class="box" style="background:var(--tealbg)">
+<p style="margin:0"><b>Case:</b> Maria tells the nurse, “I feel dizzy and I’m so tired.” The nurse then wraps a cuff on her arm: blood pressure <b>85/50</b>. Her skin looks pale and cool.</p>
+</div>
+<p><b>Question:</b> Which pieces of information came from Maria, and which did the nurse find for herself? Write your two lists, then reveal the answer.</p>
+<button class="act" id="rv0">Reveal answer</button>
+<div class="reveal hidden" id="a0">
+<div class="two">
+<div class="box sy"><h3>Symptoms (Maria reports)</h3>Dizziness, tiredness. Only Maria can feel them.</div>
+<div class="box sg"><h3>Signs (nurse finds)</h3>Blood pressure 85/50, pale skin, cool skin. Anyone can observe or measure them.</div>
+</div>
+</div>
+<div class="nextrow"><span></span><button class="alt" data-go="1">Next: key ideas</button></div>
+</section>
+
+<section id="s1">
+<h2>2. Key ideas</h2>
+<div class="two">
+<div class="box sy"><h3>Symptom</h3><p style="margin:0">What the patient <b>feels and reports</b>. It is subjective.<br>Examples: pain, nausea, fatigue, itching, dizziness.</p></div>
+<div class="box sg"><h3>Sign</h3><p style="margin:0">What someone else can <b>observe or measure</b>. It is objective.<br>Examples: fever reading, rash, swelling, pulse rate, wheezing heard with a stethoscope.</p></div>
+</div>
+<p><b>Remember:</b></p>
+<ul>
+<li>One condition often has both. Asthma: shortness of breath (symptom) and wheezing (sign).</li>
+<li>Some things are both. “I feel hot” is a symptom; a thermometer reading of 39.2 °C is a sign.</li>
+<li>A condition can have signs with no symptoms, such as high blood pressure in the early stage.</li>
+<li>Good care records both, clearly separated, in the patient’s own words for symptoms.</li>
+</ul>
+<div class="nextrow"><button class="alt" data-go="0">Back</button><button class="act" data-go="2">Next: true or false</button></div>
+</section>
+
+<section id="s2">
+<h2>3. True or false</h2>
+<p class="lead">Pick an answer for each statement.</p>
+<div id="tf"></div>
+<div class="score" id="tfscore"></div>
+<div class="nextrow"><button class="alt" data-go="1">Back</button><button class="act" data-go="3">Next: sorting</button></div>
+</section>
+
+<section id="s3">
+<h2>4. Sort it</h2>
+<p class="lead">Tap an item, then tap the box where it belongs.</p>
+<div class="pool" id="pool"></div>
+<div class="fb hidden" id="sfb"></div>
+<div class="two">
+<div class="box sy drop" id="dsym" tabindex="0" role="button" aria-label="Symptoms box"><h3>Symptoms</h3><div class="items"></div></div>
+<div class="box sg drop" id="dsig" tabindex="0" role="button" aria-label="Signs box"><h3>Signs</h3><div class="items"></div></div>
+</div>
+<div class="score" id="sscore"></div>
+<div class="nextrow"><button class="alt" data-go="2">Back</button><button class="act" data-go="4">Next: matching</button></div>
+</section>
+
+<section id="s4">
+<h2>5. Match the condition</h2>
+<p class="lead">Tap a condition, then tap its typical signs and symptoms.</p>
+<div class="mcols"><div id="mL"></div><div id="mR"></div></div>
+<div class="fb hidden" id="mfb"></div>
+<div class="score" id="mscore"></div>
+<div class="nextrow"><button class="alt" data-go="3">Back</button><button class="act" data-go="5">Next: group role play</button></div>
+</section>
+
+<section id="s5">
+<h2>6. Group activity: clinic role play</h2>
+<p class="lead">Groups of 3 to 5. Each person takes one role, then you run the scenario in about 10 minutes.</p>
+<p><label>Group size: <select id="gs"><option>3</option><option selected>4</option><option>5</option></select></label>
+<button class="act" id="assign">Assign roles and scenario</button></p>
+<div id="grp" class="hidden">
+<h3>Who plays what</h3>
+<table id="rt"></table>
+<h3>Scenario cards</h3><p class="lead" style="margin-bottom:8px">The scenario name is on the patient’s card only. Only the patient should look at it, and the card hides again when tapped.</p>
+<div class="two">
+<div class="box sy"><h3>Patient card (patient only)</h3><button class="alt" id="pbtn">Patient only: show my card</button><div id="pc" class="hidden" style="margin-top:10px"></div></div>
+<div class="box sg"><h3>Clinician’s findings (tap to reveal when examined)</h3><div id="fc"></div></div>
+</div>
+<h3>Steps</h3>
+<ol>
+<li>Clinician greets the patient and asks open questions: where, when it started, how bad.</li>
+<li>Patient answers only with how they feel (symptoms).</li>
+<li>Clinician checks the patient and reveals each finding (signs).</li>
+<li>Recorder fills the two columns below while listening.</li>
+<li>Observer uses the checklist. Then everyone debriefs.</li>
+</ol>
+<div class="two">
+<div><b>Recorder: symptoms</b><textarea aria-label="Symptoms notes"></textarea></div>
+<div><b>Recorder: signs</b><textarea aria-label="Signs notes"></textarea></div>
+</div>
+<h3>Observer checklist</h3>
+<label class="ck"><input type="checkbox"> Clinician asked open questions and listened</label>
+<label class="ck"><input type="checkbox"> Symptoms were written in the patient’s words</label>
+<label class="ck"><input type="checkbox"> Signs were measured or observed, not guessed</label>
+<label class="ck"><input type="checkbox"> Nothing was put in the wrong column</label>
+<label class="ck"><input type="checkbox"> The clinician spoke kindly and explained what they were doing</label>
+<h3>Debrief questions</h3>
+<ol><li>Which finding was hardest to place as sign or symptom? Why?</li><li>What did the patient say that the measurements could not show?</li><li>Swap roles: what would you do differently next time?</li></ol>
+<button class="alt" id="again">New scenario, shuffle roles</button>
+</div>
+<div class="nextrow"><button class="alt" data-go="4">Back</button><span></span></div>
+</section>
+</main>
+<script>
+var $=function(s){return document.querySelector(s)};
+var steps=["Starter","Key ideas","True or false","Sort","Match","Role play"];
+var nav=$("#nav");
+steps.forEach(function(t,i){var b=document.createElement("button");b.textContent=(i+1)+". "+t;b.onclick=function(){go(i)};nav.appendChild(b)});
+function go(i){document.querySelectorAll("section").forEach(function(s,j){s.classList.toggle("on",i===j)});
+ nav.querySelectorAll("button").forEach(function(b,j){b.setAttribute("aria-current",i===j?"true":"false")});window.scrollTo(0,0)}
+document.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){go(+b.dataset.go)}});
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+$("#rv0").onclick=function(){$("#a0").classList.remove("hidden")};
+
+/* True or false */
+var TF=[
+["Symptoms are things the patient feels and reports.",true,"A symptom is subjective: only the patient can feel it."],
+["A rash that a nurse can see is a sign.",true,"Anything observable by someone else is a sign."],
+["Pain can be read directly from a thermometer.",false,"Pain is a symptom. We use scales (like 0 to 10) based on what the patient says."],
+["A blood pressure reading is a symptom.",false,"It is measured with a device, so it is a sign."],
+["A person can have signs of a condition without feeling any symptoms.",true,"High blood pressure is often silent at first."],
+["Only doctors are able to notice signs.",false,"Nurses, carers, family and even patients can observe signs such as swelling or a rash."]];
+var tfDone=0,tfOk=0;
+TF.forEach(function(q,i){
+ var d=document.createElement("div");d.className="q";
+ d.innerHTML="<div>"+(i+1)+". "+q[0]+"</div><div class='row'><button class='alt'>True</button><button class='alt'>False</button></div><div class='fb hidden'></div>";
+ var bs=d.querySelectorAll("button"),fb=d.querySelector(".fb");
+ bs.forEach(function(b,k){b.onclick=function(){
+  if(tfDone>=0&&d.dataset.d)return;d.dataset.d=1;tfDone++;
+  var right=(k===0)===q[1];if(right)tfOk++;
+  fb.className="fb "+(right?"ok":"no");fb.textContent=(right?"Correct. ":"Not quite. ")+q[2];
+  bs.forEach(function(x){x.disabled=true});
+  $("#tfscore").textContent=tfDone===TF.length?"Score: "+tfOk+" of "+TF.length:"Answered "+tfDone+" of "+TF.length;
+ }});
+ $("#tf").appendChild(d);
+});
+
+/* Sorting */
+var SI=[["Nausea","sym"],["Fever of 39.2 °C on thermometer","sig"],["Headache","sym"],["Swollen ankle","sig"],["Fatigue","sym"],["Pulse of 120 beats per minute","sig"],["Itching","sym"],["Wheezing heard with stethoscope","sig"],["Dizziness","sym"],["Yellow skin (jaundice)","sig"]];
+var selChip=null,sOk=0,sPlaced=0;
+shuffle(SI).forEach(function(it){
+ var c=document.createElement("button");c.className="chip";c.textContent=it[0];c.dataset.t=it[1];
+ c.onclick=function(){if(c.classList.contains("done"))return;if(selChip)selChip.classList.remove("sel");selChip=c;c.classList.add("sel");$("#sfb").className="fb hidden"};
+ $("#pool").appendChild(c);
+});
+function drop(id,type){
+ var z=$(id);
+ function act(){
+  if(!selChip)return;var fb=$("#sfb");
+  if(selChip.dataset.t===type){
+   selChip.classList.remove("sel");selChip.classList.add("done","good");z.querySelector(".items").appendChild(selChip);
+   selChip=null;sPlaced++;sOk++;fb.className="fb ok";fb.textContent="Correct.";
+   if(sPlaced===SI.length)$("#sscore").textContent="All sorted. Ask yourself: could anyone else observe it (sign), or only the patient feel it (symptom)?";
+  }else{fb.className="fb no";fb.textContent="Try again. Ask: can someone else observe or measure this, or only the patient feel it?"}
+ }
+ z.onclick=act;z.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();act()}};
+}
+drop("#dsym","sym");drop("#dsig","sig");
+
+/* Matching */
+var M=[["Asthma","Wheezing and shortness of breath"],["Diabetes (high blood sugar)","Increased thirst and frequent urination"],["Anemia","Pale skin and tiredness"],["Pneumonia","Fever, cough and crackles on lung exam"],["Allergic reaction","Hives (raised rash) and swelling"]];
+var mSel=null,mDone=0;
+shuffle(M.map(function(m,i){return i})).forEach(function(i){});
+M.forEach(function(m,i){var b=document.createElement("button");b.className="chip";b.style.marginBottom="8px";b.textContent=m[0];b.dataset.i=i;
+ b.onclick=function(){if(b.classList.contains("done"))return;if(mSel)mSel.classList.remove("sel");mSel=b;b.classList.add("sel")};$("#mL").appendChild(b)});
+shuffle(M.map(function(m,i){return i})).forEach(function(i){
+ var b=document.createElement("button");b.className="chip";b.style.marginBottom="8px";b.textContent=M[i][1];b.dataset.i=i;
+ b.onclick=function(){
+  if(b.classList.contains("done")||!mSel)return;var fb=$("#mfb");
+  if(mSel.dataset.i===b.dataset.i){
+   [mSel,b].forEach(function(x){x.classList.remove("sel");x.classList.add("done","good")});mSel=null;mDone++;
+   fb.className="fb ok";fb.textContent="Matched.";
+   if(mDone===M.length)$("#mscore").textContent="All matched. Notice each pair mixes what the patient feels with what can be observed.";
+  }else{fb.className="fb no";fb.textContent="Not a match. Think about which condition would cause those findings."}
+ };$("#mR").appendChild(b)});
+
+/* Role play */
+var ROLES=[
+["Patient","Plays the person who is unwell. Describes only how they feel, using the patient card."],
+["Clinician (nurse or doctor)","Interviews the patient, examines them, and reveals each finding."],
+["Recorder","Writes symptoms and signs in two separate columns."],
+["Observer","Uses the checklist and gives kind, specific feedback at the end."],
+["Family member or carer","Adds what they have noticed at home and asks the clinician a question."]];
+var SC=[
+{n:"Breathing trouble",p:["“My chest feels tight and I can’t catch my breath.”","“It started after I climbed the stairs.”","“I feel scared and tired.”"],f:["Respiratory rate: 28 per minute","Wheezing heard with stethoscope","Oxygen level: 92%","Using neck muscles to breathe"]},
+{n:"Fever and cough",p:["“I ache all over and my head hurts.”","“I feel freezing and then hot.”","“My throat is sore and I have no appetite.”"],f:["Temperature: 38.9 °C","Pulse: 104 per minute","Red throat","Dry cough observed during visit"]},
+{n:"Stomach pain",p:["“I have a sharp pain low on my right side.”","“I feel sick and I don’t want to eat.”","“Walking makes it worse.”"],f:["Temperature: 38.1 °C","Tenderness when right lower abdomen is pressed","Vomited once in the clinic","Pulse: 98 per minute"]}];
+var last=-1;
+function build(){
+ var n=+$("#gs").value,rs=ROLES.slice(0,n),sh=shuffle(rs);
+ var html="<tr><th>Student</th><th>Role</th><th>Job</th></tr>";
+ sh.forEach(function(r,i){html+="<tr><td>Student "+(i+1)+"</td><td><b>"+r[0]+"</b></td><td>"+r[1]+"</td></tr>"});
+ $("#rt").innerHTML=html;
+ var k;do{k=Math.floor(Math.random()*SC.length)}while(k===last&&SC.length>1);last=k;var s=SC[k];
+ 
+ $("#pc").innerHTML="<p style='margin:0 0 6px'><b>Scenario: "+s.n+"</b></p><ul style='margin:0;padding-left:18px'>"+s.p.map(function(x){return "<li>"+x+"</li>"}).join("")+"</ul>";$("#pc").classList.add("hidden");$("#pbtn").textContent="Patient only: show my card";
+ var fc=$("#fc");fc.innerHTML="";
+ s.f.forEach(function(t){var b=document.createElement("button");b.className="chip find";b.style.marginBottom="6px";b.innerHTML="<span>Tap to reveal</span><span class='tag' style='background:var(--signbg);color:var(--sign)'>sign</span>";
+  b.onclick=function(){b.firstChild.textContent=t};fc.appendChild(b)});
+ $("#grp").classList.remove("hidden");
+}
+$("#pbtn").onclick=function(){var h=$("#pc").classList.toggle("hidden");$("#pbtn").textContent=h?"Patient only: show my card":"Hide my card"};
+$("#assign").onclick=build;$("#again").onclick=function(){build();window.scrollTo(0,0)};
+go(0);
+</script>
+</body>
+</html>
